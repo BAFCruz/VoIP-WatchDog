@@ -5,7 +5,7 @@ Requires shebang line, and "myenv" is a virtual environment.
 ```
  #!/var/lib/asterisk/agi-bin/myenv/bin/python3
 ```
-- Call Handler is triggered by Asterisk dial plan when an INVITE arrives to check both source and destination scores, if any < 5 the call is terminated using the CHANNEL.
+- Call Handler is triggered by Asterisk dial plan when an INVITE arrives to check both source and destination scores, if one is < 5 the call is terminated using the CHANNEL.
 - Call Tracker is also fed by Asterisk, tracks active calls originating from the internal network using a database table named active_calls, with the intent to prevent multiple calls from the same internal source. Call also terminated through CHANNEL information.
 - Call Tracker Cleaner is triggered by Asterisk to clean the active_calls database table the moment a call is terminated.
 
