@@ -7,7 +7,7 @@ import aiomysql
 import logging
 
 # Setup logging
-logging.basicConfig(filename='/var/log/asterisk/agi-acl.log', level=logging.DEBUG, format='%(asctime)s - %(message)s')
+logging.basicConfig(filename='/var/log/asterisk/acl.log', level=logging.DEBUG, format='%(asctime)s - %(message)s')
 
 # MySQL (Docker) Database connection parameters
 DB_HOST = '192.168.1.9'
