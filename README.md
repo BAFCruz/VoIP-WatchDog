@@ -10,4 +10,4 @@ Not Asterisk dial plan related scripts (Authentication part)
 - ACL Handler configures /etc/Asterisk/acl.conf, adding IPs if score > 5, or removing if score < 5, as per a database table.
 
 Call Detail Records 
-- CDR Parser automatically fetches call records when available in the Call Detail Record (CDR) database table by going through the uniqueid.
+- CDR Parser automatically fetches call records when available in the Call Detail Record (CDR) database table looking through the uniqueid.
