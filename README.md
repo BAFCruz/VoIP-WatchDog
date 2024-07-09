@@ -1,4 +1,4 @@
-Python scripts from an implementation of a Reputation System in a virtual lab with Asterisk (using SIP trunks) for testing dynamic control of authentication and call control. 
+Python scripts from an implementation of a Reputation System in a virtual lab with Asterisk (using SIP trunks) for testing dynamic governance of authentication and call control. 
 
 The 3 scripts below require variables from Asterisk dial plan, which extracts SIP headers information (Call Routing part)
 - Call Handler is triggered by Asterisk dial plan when an INVITE arrives to check both source and destination scores, if any < 5 the call is terminated using the CHANNEL.
