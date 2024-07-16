@@ -45,7 +45,7 @@ def reload_acl_module():
 
 def update_acl_config(bad_ips):
     """Updates the ACL configuration file with the list of bad IPs"""
-    acl_start_time = time.time()
+#    acl_start_time = time.time()
     try:
         with open(ACL_CONFIG_PATH, 'r+') as file:
             lines = file.readlines()
@@ -73,8 +73,9 @@ def update_acl_config(bad_ips):
     except Exception as e:
         logging.error(f"Failed to update ACL configuration: {e}")
     acl_end_time = time.time()
-    logging.info(f"ACL configuration update time: {acl_end_time - acl_start_time:.6f} seconds")
-    return acl_end_time - acl_start_time
+## BENCHMARKING ##
+#    logging.info(f"ACL configuration update time: {acl_end_time - acl_start_time:.6f} seconds")
+#    return acl_end_time - acl_start_time
 
 async def fetch_all_ips():
     """Fetches all IPs and their scores from the database"""
@@ -99,31 +100,32 @@ async def fetch_all_ips():
     logging.info(f"Database IP fetch time: {db_query_end_time - db_query_start_time:.6f} seconds")
     return all_ips
 
-async def log_script_metrics(process, initial_disk_io, initial_net_io):
-    """Log the script's CPU, memory, disk, and network usage metrics"""
-    # CPU usage percentage
-    cpu_usage_percentage = process.cpu_percent(interval=1)
+## BENCHMARKING ##
+# async def log_script_metrics(process, initial_disk_io, initial_net_io):
+#    """Log the script's CPU, memory, disk, and network usage metrics"""
+#    # CPU usage percentage
+#    cpu_usage_percentage = process.cpu_percent(interval=1)
 
-    # Memory usage
-    memory_info = process.memory_info()
-    memory_rss_mb = memory_info.rss / (1024 * 1024)  # Convert from bytes to MB
-    memory_vms_mb = memory_info.vms / (1024 * 1024)  # Convert from bytes to MB
+#    # Memory usage
+#   memory_info = process.memory_info()
+#   memory_rss_mb = memory_info.rss / (1024 * 1024)  # Convert from bytes to MB
+#   memory_vms_mb = memory_info.vms / (1024 * 1024)  # Convert from bytes to MB
 
-    # Disk usage (approximation)
-    current_disk_io = psutil.disk_io_counters()
-    disk_read_mb = (current_disk_io.read_bytes - initial_disk_io.read_bytes) / (1024 * 1024)
-    disk_write_mb = (current_disk_io.write_bytes - initial_disk_io.write_bytes) / (1024 * 1024)
+#    # Disk usage (approximation)
+#    current_disk_io = psutil.disk_io_counters()
+#    disk_read_mb = (current_disk_io.read_bytes - initial_disk_io.read_bytes) / (1024 * 1024)
+#    disk_write_mb = (current_disk_io.write_bytes - initial_disk_io.write_bytes) / (1024 * 1024)
 
-    # Network usage (not exact, just approximation)
-    current_net_io = psutil.net_io_counters()
-    net_sent_mb = (current_net_io.bytes_sent - initial_net_io.bytes_sent) / (1024 * 1024)
-    net_recv_mb = (current_net_io.bytes_recv - initial_net_io.bytes_recv) / (1024 * 1024)
+#    # Network usage (not exact, just approximation)
+#    current_net_io = psutil.net_io_counters()
+#    net_sent_mb = (current_net_io.bytes_sent - initial_net_io.bytes_sent) / (1024 * 1024)
+#    net_recv_mb = (current_net_io.bytes_recv - initial_net_io.bytes_recv) / (1024 * 1024)
 
-    # Log metrics
-    logging.info(f"CPU usage: {cpu_usage_percentage:.2f}%")
-    logging.info(f"Memory usage: RSS={memory_rss_mb:.2f} MB, VMS={memory_vms_mb:.2f} MB")
-    logging.info(f"Disk I/O: Read={disk_read_mb:.2f} MB, Write={disk_write_mb:.2f} MB")
-    logging.info(f"Network I/O: Sent={net_sent_mb:.2f} MB, Received={net_recv_mb:.2f} MB")
+#    # Log metrics
+#    logging.info(f"CPU usage: {cpu_usage_percentage:.2f}%")
+#    logging.info(f"Memory usage: RSS={memory_rss_mb:.2f} MB, VMS={memory_vms_mb:.2f} MB")
+#    logging.info(f"Disk I/O: Read={disk_read_mb:.2f} MB, Write={disk_write_mb:.2f} MB")
+#    logging.info(f"Network I/O: Sent={net_sent_mb:.2f} MB, Received={net_recv_mb:.2f} MB")
 
 async def main():
     global running  # Declare that we are using the global variable
