@@ -1,7 +1,7 @@
 # This is an example of SIP header information extraction
 # Taking out FROM, TO, CHANNEL and SRC IP
 
-# "var/lib/asterisk/agi-bin/myenv/bin/python3" is a virtual environment prepared to run the scripts with the required modules
+# "var/lib/asterisk/agi-bin/myenv/bin/python3" -> where "myenv" is a virtual environment prepared to run the scripts with the required modules
 # "/var/lib/asterisk/agi-bin/script.py" and "/var/lib/asterisk/agi-bin/calls.py" are the scripts paths
 
 # "${from_extension} ${to_extension} ${CHANNEL}" and "${src_ip} ${from_extension} ${to_extension} ${CHANNEL}" is for Asterisk to get the extraction information into the scripts  
