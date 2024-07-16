@@ -70,6 +70,7 @@ async def process_log_line(line, channel):
     if message:
         await send_to_rabbitmq(channel, message)
 
+    ## BENCHMARKING ##
 async def log_script_metrics():
     """Log the script's CPU, memory, disk, and network usage metrics."""
     process = psutil.Process()
@@ -105,10 +106,12 @@ async def log_script_metrics():
             logging.info(f"Memory usage: RSS={memory_rss_mb:.2f} MB, VMS={memory_vms_mb:.2f} MB")
             logging.info(f"Disk I/O: Read={disk_read_mb:.2f} MB, Write={disk_write_mb:.2f} MB")
             logging.info(f"Network I/O: Sent={net_sent_mb:.2f} MB, Received={net_recv_mb:.2f} MB")
-
+            
+            
             await asyncio.sleep(20)  # Log every 60 seconds
     except asyncio.CancelledError:
         logging.info("Metrics logging task cancelled. Performing cleanup...")
+## END BENCHMARKING ##
 
 async def main():
     global running  # Declare that we are using the global variable
