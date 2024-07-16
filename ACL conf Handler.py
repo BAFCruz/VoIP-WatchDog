@@ -74,8 +74,8 @@ def update_acl_config(bad_ips):
         logging.error(f"Failed to update ACL configuration: {e}")
     acl_end_time = time.time()
 ## BENCHMARKING ##
-#    logging.info(f"ACL configuration update time: {acl_end_time - acl_start_time:.6f} seconds")
-#    return acl_end_time - acl_start_time
+    logging.info(f"ACL configuration update time: {acl_end_time - acl_start_time:.6f} seconds")
+    return acl_end_time - acl_start_time
 
 async def fetch_all_ips():
     """Fetches all IPs and their scores from the database"""
@@ -101,31 +101,31 @@ async def fetch_all_ips():
     return all_ips
 
 ## BENCHMARKING ##
-# async def log_script_metrics(process, initial_disk_io, initial_net_io):
-#    """Log the script's CPU, memory, disk, and network usage metrics"""
-#    # CPU usage percentage
-#    cpu_usage_percentage = process.cpu_percent(interval=1)
+ async def log_script_metrics(process, initial_disk_io, initial_net_io):
+    """Log the script's CPU, memory, disk, and network usage metrics"""
+    # CPU usage percentage
+    cpu_usage_percentage = process.cpu_percent(interval=1)
 
-#    # Memory usage
-#   memory_info = process.memory_info()
-#   memory_rss_mb = memory_info.rss / (1024 * 1024)  # Convert from bytes to MB
-#   memory_vms_mb = memory_info.vms / (1024 * 1024)  # Convert from bytes to MB
+    # Memory usage
+   memory_info = process.memory_info()
+   memory_rss_mb = memory_info.rss / (1024 * 1024)  # Convert from bytes to MB
+   memory_vms_mb = memory_info.vms / (1024 * 1024)  # Convert from bytes to MB
 
-#    # Disk usage (approximation)
-#    current_disk_io = psutil.disk_io_counters()
-#    disk_read_mb = (current_disk_io.read_bytes - initial_disk_io.read_bytes) / (1024 * 1024)
-#    disk_write_mb = (current_disk_io.write_bytes - initial_disk_io.write_bytes) / (1024 * 1024)
+    # Disk usage (approximation)
+    current_disk_io = psutil.disk_io_counters()
+    disk_read_mb = (current_disk_io.read_bytes - initial_disk_io.read_bytes) / (1024 * 1024)
+    disk_write_mb = (current_disk_io.write_bytes - initial_disk_io.write_bytes) / (1024 * 1024)
 
-#    # Network usage (not exact, just approximation)
-#    current_net_io = psutil.net_io_counters()
-#    net_sent_mb = (current_net_io.bytes_sent - initial_net_io.bytes_sent) / (1024 * 1024)
-#    net_recv_mb = (current_net_io.bytes_recv - initial_net_io.bytes_recv) / (1024 * 1024)
+    # Network usage (not exact, just approximation)
+    current_net_io = psutil.net_io_counters()
+    net_sent_mb = (current_net_io.bytes_sent - initial_net_io.bytes_sent) / (1024 * 1024)
+    net_recv_mb = (current_net_io.bytes_recv - initial_net_io.bytes_recv) / (1024 * 1024)
 
-#    # Log metrics
-#    logging.info(f"CPU usage: {cpu_usage_percentage:.2f}%")
-#    logging.info(f"Memory usage: RSS={memory_rss_mb:.2f} MB, VMS={memory_vms_mb:.2f} MB")
-#    logging.info(f"Disk I/O: Read={disk_read_mb:.2f} MB, Write={disk_write_mb:.2f} MB")
-#    logging.info(f"Network I/O: Sent={net_sent_mb:.2f} MB, Received={net_recv_mb:.2f} MB")
+    # Log metrics
+    logging.info(f"CPU usage: {cpu_usage_percentage:.2f}%")
+    logging.info(f"Memory usage: RSS={memory_rss_mb:.2f} MB, VMS={memory_vms_mb:.2f} MB")
+    logging.info(f"Disk I/O: Read={disk_read_mb:.2f} MB, Write={disk_write_mb:.2f} MB")
+    logging.info(f"Network I/O: Sent={net_sent_mb:.2f} MB, Received={net_recv_mb:.2f} MB")
 
 async def main():
     global running  # Declare that we are using the global variable
@@ -152,6 +152,7 @@ async def main():
         else:
             logging.info("No IPs with score < 5. Skipping ACL update.")
 
+        ## BENCHMARKING ##
         cycle_end_time = time.time()
         cpu_times_cycle_end = process.cpu_times()
         total_cycle_elapsed_time = cycle_end_time - cycle_start_time
@@ -175,10 +176,12 @@ async def main():
         initial_disk_io = psutil.disk_io_counters()
         initial_net_io = psutil.net_io_counters()
         await log_script_metrics(process, initial_disk_io, initial_net_io)
-
+        ## END BENCHMARKING ##
+        
         logging.info("Sleeping before next check...\r\n")
         await asyncio.sleep(CHECK_INTERVAL)
 
+    ## BENCHMARKING ##
     global_end_time = time.time()
     total_runtime = global_end_time - global_start_time
     cpu_times_end = process.cpu_times()
@@ -190,6 +193,7 @@ async def main():
     logging.info(f"Total CPU time: {total_cpu_time:.6f} seconds")
     logging.info(f"Overall CPU usage: {cpu_usage_percentage:.2f}% over {total_elapsed_time:.6f} seconds with {cpu_count} CPUs")
     logging.info(f"Memory usage: RSS={memory_rss_mb:.2f} MB, VMS={memory_vms_mb:.2f} MB\r\n\r\n")
+    ## END BENCHMARKING ##
 
 if __name__ == '__main__':
     logging.debug('ACL configuration starting...\r\n')
