@@ -154,6 +154,7 @@ async def check_and_hangup_calls(src_ip, from_extension, to_extension, channel):
                     await conn.commit()
                     logging.debug(f'Call inserted successfully')
 
+        ## BENCHMARKING ##
         overall_end_time = time.time()
         cpu_times_end = process.cpu_times()
         current_disk_io = psutil.disk_io_counters()
@@ -183,6 +184,7 @@ async def check_and_hangup_calls(src_ip, from_extension, to_extension, channel):
         logging.info(f"Memory usage: RSS={memory_rss_mb:.2f} MB, VMS={memory_vms_mb:.2f} MB")
         logging.info(f"Disk usage: Read={disk_read_mb:.2f} MB, Write={disk_write_mb:.2f} MB")
         logging.info(f"Network I/O: Sent={net_io_sent_mb:.2f} MB, Received={net_io_recv_mb:.2f} MB")
+        ## END BENCHMARKING ##
         logging.info(f"AGI Script terminated\r\n\r\n")
 
     except aiomysql.MySQLError as err:
