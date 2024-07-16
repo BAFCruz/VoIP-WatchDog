@@ -156,7 +156,8 @@ async def evaluate_and_send(channel, last_uniqueid, pool):
     logging.info(f"Memory usage: RSS={memory_rss_mb:.2f} MB, VMS={memory_vms_mb:.2f} MB")
     logging.info(f"Disk I/O: Read={read_bytes_mb:.2f} MB, Write={write_bytes_mb:.2f} MB")
     logging.info(f"Network I/O: Sent={sent_bytes_mb:.2f} MB, Received={recv_bytes_mb:.2f} MB")
-
+    ## END BENCHMARKING ##
+    
     return last_uniqueid
 
 
