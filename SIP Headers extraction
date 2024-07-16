@@ -1,0 +1,21 @@
+# This is an example of SIP header information extraction
+# Taking out FROM, TO, CHANNEL and SRC IP
+
+# "var/lib/asterisk/agi-bin/myenv/bin/python3" is a virtual environment prepared to run the scripts with the required modules
+# "/var/lib/asterisk/agi-bin/script.py" and "/var/lib/asterisk/agi-bin/calls.py" are the scripts paths
+
+# "${from_extension} ${to_extension} ${CHANNEL}" and "${src_ip} ${from_extension} ${to_extension} ${CHANNEL}" is for Asterisk to get the extraction information into the scripts  
+
+# Example below for taking the headers of calls related to extension range 200 - 299
+exten => _2XX,1,NoOp(Storing SIP Headers 2XX)
+ same => n,Set(contact_header=${PJSIP_HEADER(read,Contact)})
+ same => n,Set(temp_ip=${CUT(contact_header,@,2)})
+ same => n,Set(src_ip=${CUT(temp_ip,:,1)})     ; GET INCOMING CALL SRC IP
+ same => n,Set(from_extension=${CUT(PJSIP_HEADER(read,From),:,2)})
+ same => n,Set(from_extension=${CUT(from_extension,@,1)})
+ same => n,Set(to_extension=${CUT(PJSIP_HEADER(read,To),:,2)})
+ same => n,Set(to_extension=${CUT(to_extension,@,1)})
+ same => n,System(/var/lib/asterisk/agi-bin/myenv/bin/python3 /var/lib/asterisk/agi-bin/script.py ${from_extension} ${to_extension} ${CHANNEL})
+ same => n,System(/var/lib/asterisk/agi-bin/myenv/bin/python3 /var/lib/asterisk/agi-bin/calls.py ${src_ip} ${from_extension} ${to_extension} ${CHANNEL})
+ same => n,Dial(PJSIP/${EXTEN}@trunk)
+ same => n,Hangup()
