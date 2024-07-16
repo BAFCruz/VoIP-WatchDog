@@ -56,6 +56,7 @@ async def main(channel):
             pool.close()
             await pool.wait_closed()
 
+        ## BENCHMARKING ##
         overall_end_time = time.time()
         cpu_times_end = process.cpu_times()
         current_disk_io = psutil.disk_io_counters()
@@ -94,6 +95,7 @@ async def main(channel):
         logging.info(f"Disk usage: Read={disk_read_mb:.2f} MB, Write={disk_write_mb:.2f} MB")
         logging.info(f"Network I/O: Sent={net_io_sent_mb:.2f} MB, Received={net_io_recv_mb:.2f} MB")
         logging.info(f"AGI Hangup Script terminated\r\n\r\n")
+        ## END BENCHMARKING ##
 
 if __name__ == "__main__":
     logging.debug('Hangup Cleanup starting...')
