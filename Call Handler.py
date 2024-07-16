@@ -80,7 +80,7 @@ async def check_and_hangup_calls(pool, from_extension, to_extension, channel):
                 connection_time = time.time()
                 logging.info(f"Connection pool acquisition time: {connection_time - start_time:.6f} seconds")
 
-                # Consulta de pontuação de from_extension
+                # Check from_extension score
                 start_time = time.time()
                 logging.debug(f'Checking score for from_extension: {from_extension}')
                 from_score = await get_user_score(cursor, from_extension)
@@ -88,7 +88,7 @@ async def check_and_hangup_calls(pool, from_extension, to_extension, channel):
                 logging.info(f"Query time for from_extension: {query_time_from - start_time:.6f} seconds")
                 logging.debug(f'from_extension: {from_extension}, from_score: {from_score}')
 
-                # Consulta de pontuação de to_extension
+                # Check to_extension score
                 start_time = time.time()
                 logging.debug(f'Checking score for to_extension: {to_extension}')
                 to_score = await get_user_score(cursor, to_extension)
@@ -105,6 +105,7 @@ async def check_and_hangup_calls(pool, from_extension, to_extension, channel):
                 else:
                     logging.debug('Call does not need to be hung up')
 
+        ## BENCHMARKING ##
         overall_end_time = time.time()
         cpu_times_end = process.cpu_times()
         current_disk_io = psutil.disk_io_counters()
@@ -142,8 +143,11 @@ async def check_and_hangup_calls(pool, from_extension, to_extension, channel):
         logging.info(f"Memory usage: RSS={memory_rss_mb:.2f} MB, VMS={memory_vms_mb:.2f} MB")
         logging.info(f"Disk usage: Read={disk_read_mb:.2f} MB, Write={disk_write_mb:.2f} MB")
         logging.info(f"Network I/O: Sent={net_io_sent_mb:.2f} MB, Received={net_io_recv_mb:.2f} MB")
+        ## END BENCHMARKING ##
         logging.info(f"AGI Script terminated\r\n\r\n")
+        
 
+    
     except aiomysql.MySQLError as err:
         logging.error(f"Database error: {err}")
     except Exception as e:
